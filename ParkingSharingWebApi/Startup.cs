@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using ParkingSharingWebApi.Models;
 
 namespace ParkingSharingWebApi
 {
@@ -45,7 +46,7 @@ namespace ParkingSharingWebApi
 
             if (!string.IsNullOrEmpty(databaseUri))
             {
-                services.AddDbContext<ParkingSharingContext>(options => options.UseMySql(
+                services.AddDbContext<ParkingSharingDbContext>(options => options.UseMySql(
                     GetConnectionString(databaseUri)));
 
                 services.AddDataProtection()
@@ -88,6 +89,7 @@ namespace ParkingSharingWebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
 
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files
@@ -96,5 +98,24 @@ namespace ParkingSharingWebApi
 
             app.UseMvc();
         }
+    }
+
+    public class ParkingSharingDbContext : DbContext
+    {
+        public DbSet<Row> Dashboard { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Parking> Parkings { get; set; }
+        public DbSet<Log> Tracking { get; set; }
+
+        // http://www.mithunvp.com/aspnet-core-web-api-entity-framework-core/
+
+        // https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/migrations
+
+        // dotnet ef migrations remove
+        // dotnet ef migrations add ParkingSharingDb
+        // dotnet ef database update
+
+        public ParkingSharingDbContext(DbContextOptions options) : base(options) { }
+        public ParkingSharingDbContext() { }
     }
 }
