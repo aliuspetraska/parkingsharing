@@ -1,2 +1,2 @@
-# parkingsharing
-parkingsharing
+# Parking Sharing
+A system that allows owners to publish information on owned or allocated parking places - location, availability and use rates. ParkingSharing system will help drivers to get information on nearest available parking places as well as book such places.
